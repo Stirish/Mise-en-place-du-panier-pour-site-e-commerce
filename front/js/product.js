@@ -76,68 +76,7 @@ function addProductStorage(selectedProduct) {
         storage.push(selectedProduct);
     }
     localStorage.setItem('basket', JSON.stringify(storage));
-}
-
-//------------------------GESTION AVANT PANIER------------------------
-// Appel API 
-function addProduct(){
-    fetch("http://localhost:3000/api/products/" + $_GET("id"))
-    .then(function(res) {
-        if (res.ok) {
-            return res.json();
-        }
-    })
-    
-    // traitement de la reponse  
-    .then(function(value){
-        const color = document.getElementById("colors").value;
-        const quantity = Number(document.getElementById("quantity").value);
-        let cart = JSON.parse(localStorage.getItem("products")) || [];
-
-        // Création de l'objet avant envoi au localStorage 
-        const item = {
-            id: value._id,
-            name: value.name,
-            altTxt: value.altTxt,
-            imgSrc: value.imageUrl,
-            color,
-            quantity,
-        };
-
-        //Condition a remplir pour ajout localStorage 
-	    if (quantity > 0 && quantity <= 100 && color !== "") {
-
-            // Ajout de l'item
-            if (cart !== null) {
-                const productFound = cart.find(
-
-                // boucle dans "cart" pour trouver la recherche exact de l'utilisateur, [[3, vert] , [6, bleu] , [6, noir]] //  
-                (element) => element.id === item.id && element.color === item.color,
-                );
-
-                // si l'element est trouvé dans le localStorage ou  non
-                if (productFound != undefined) {
-                    productFound.quantity += quantity;
-                } 
-                else {
-                    cart.push(item);
-                }
-            }
-            localStorage.setItem("products", JSON.stringify(cart));
-            popupValidate(value.name, quantity, color);
-	    } 
-        else {
-		    alert("Veuillez choisir une quantité entre 1 et 100 et une couleur.");
-	    }
-    })
-    
-    // Afficher le texte en cas d'érreur
-    .catch(function(err) {
-        let itemImg = document.getElementById('img');
-        let newText = document.createElement('p');
-        newText.innerText = "Erreur de chargement";
-        itemImg.append(newText);
-    })
+    popupValidate(selectedProduct.name, selectedProduct.quantity, selectedProduct.color);
 }
 
 // Popup choix après ajout au panier
