@@ -50,10 +50,10 @@ function buildProduct(product, baseProduct){
             <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
                 <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}"  id="quantity-${product.id}">
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}"  id="quantity-${product.id} quantity-${product.color}">
             </div>
             <div class="cart__item__content__settings__delete">
-                <p class="deleteItem" id="del-${product.id}">Supprimer</p>
+                <p class="deleteItem" id="del-${product.id} del-${product.color}">Supprimer</p>
             </div>
             </div>
         </div>
@@ -70,7 +70,7 @@ function updateQuantity() {
 			let modifyQuantity = parseInt(input.value);
 			if (parseInt(modifyQuantity) > 0 && parseInt(modifyQuantity) <= 100) {
 				basket.forEach(p => {
-					if (("quantity-"+p.id) === input.id) {
+					if (("quantity-"+p.id + ' quantity-'+p.color) === input.id) {
 						p.quantity = modifyQuantity;
 					}
 				});
@@ -89,8 +89,8 @@ function deleteProduct() {
 			{
 			let i = 0;
 			basket.forEach(p => {
-				if (("del-"+p.id) === input.id) {
-					basket.splice(i);
+				if (("del-"+p.id + ' del-'+p.color) === input.id) {
+					basket.splice(i, 1);
 				}
 				i++;
 			});
